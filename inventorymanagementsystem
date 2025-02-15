@@ -1,0 +1,190 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Product {
+    public Product(int id, String name, int quantity, float price) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    private int id;
+    private String name;
+    private int quantity;
+    private float price;
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+}
+
+public class InventoryManagementSystem {
+    static List<Product> products = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    private static void display(){
+        String str = "\n" +
+                "1. add an item\n" + //
+                "2. display all the items\n" + //
+                "3. search an item\n" + //
+                "4. delete an item\n" + //
+                "5. update an item\n" + //
+                "6. calculate the inventory value\n" + //
+                "7. exit the application \njust input!\n";
+
+        System.out.println(str);
+    }
+
+    private static void addItems(){
+        // id, name, quantity, price;
+        System.out.print("enter id: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("enter name: ");
+        String name = scanner.nextLine();
+
+
+        System.out.print("enter quantity: ");
+        int quantity = scanner.nextInt();
+
+        System.out.print("enter price: ");
+        float price = scanner.nextFloat();
+
+        Product product = new Product(id, name, quantity, price);
+        products.add(product);
+
+        System.out.print("\n producted added \n ");
+
+    }
+    
+    private static void displayItems(){
+        for(Product product : products){
+            System.out.println("id is "+ product.getId());
+            System.out.println("name is "+product.getName());
+            System.out.println("quantity is "+ product.getQuantity());
+            System.out.println("price is "+ product.getPrice());
+            System.out.println();
+        }
+    }
+    
+    private static void search(){
+        System.out.println("enter id: ");
+        int targetId = scanner.nextInt();
+        boolean found = false;
+
+        for(Product product : products){
+            if(product.getId() == targetId){
+                System.out.println("found product");
+                found = true;
+            }
+        }
+        if(found == false){
+            System.out.println("cannot find product");
+        }
+
+    }
+    
+    private static void updateItem(){
+        System.out.println("enter id : ");
+        int targetId = scanner.nextInt();
+        scanner.nextLine();
+        for(Product product : products){
+            if(product.getId() == targetId){
+                System.out.println("please enter new name");
+                String name = scanner.nextLine();
+                product.setName(name);
+
+                System.out.println("please enter new quantity");
+                int quantity = scanner.nextInt();
+                product.setQuantity(quantity);
+
+                System.out.println("please enter new price");
+                float price = scanner.nextFloat();
+                product.setPrice(price);
+            }
+        }
+    }
+    
+    private static void deleteItem(){
+        System.out.println("enter id : ");
+        int targetId = scanner.nextInt();
+        for(Product product : products){
+            if(product.getId() == targetId){
+                products.remove(product);
+            }
+        }
+    }
+    
+    private static void calculateTotal(){
+        float total = 0;
+        for(Product product : products){
+            // quantity * price
+            total = total + product.getQuantity() * product.getPrice();
+        }
+        System.out.println("total value = "+total);
+    }
+    public static void main(String[] args) {
+        
+        int choice;
+        do{
+            display();
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    addItems();
+                    break;
+                case 2:
+                    displayItems();
+                    break;
+                case 3: 
+                    search();
+                    break;
+                case 4:
+                    deleteItem();
+                    break;
+                case 5:
+                    updateItem();
+                    break;
+                case 6:
+                    calculateTotal();
+                    break;
+                case 7: 
+                    System.exit(0);
+                    break;
+                default: 
+                    System.out.println("invalid choice");
+            }
+        }while (choice!=7);
+    }
+}
